@@ -8,6 +8,10 @@ The app downloads Phi-3.5 Mini (~2 GB, quantized 4-bit) through [WebLLM](https:/
 
 Everything runs client-side: the prompt goes in, the model thinks, JSON comes out, components appear. No externals API to any server, but they could be implemented as fallback, for example when the user has a very poor PC and isn't able to run webllm.
 
+## Live demo
+
+Here is a live demo hosted in vercel: https://generative-ui-webllm.vercel.app/
+
 ## Components
 
 The model can use these to compose interfaces:
