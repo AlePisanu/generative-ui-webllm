@@ -1,26 +1,31 @@
+const barColors = [
+    "bg-accent", "bg-blue-400", "bg-emerald-400",
+    "bg-violet-400", "bg-orange-400", "bg-rose-400",
+    "bg-amber-400", "bg-cyan-400",
+];
+
 export const ChartBlock = ({ props }: { props: Record<string, unknown> }) => {
     const data = (props.data as Array<{ label: string; value: number }>) || [];
     const max = Math.max(...data.map((d) => d.value), 1);
+
     return (
-        <div className="rounded-lg border border-gray-700 bg-gray-900/60 p-4">
+        <div className="block">
             {typeof props.title === "string" && (
-                <h3 className="mb-4 text-lg font-semibold text-white">
-                    {props.title}
-                </h3>
+                <h3 className="block-title mb-5">{props.title}</h3>
             )}
-            <div className="space-y-2">
+            <div className="flex h-40 items-end gap-3">
                 {data.map((d, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                        <span className="w-20 text-right text-xs text-gray-400 shrink-0">
+                    <div key={i} className="flex h-full flex-1 flex-col items-center justify-end gap-2">
+                        <span className="text-[11px] font-medium tabular-nums text-text-2">
+                            {d.value}
+                        </span>
+                        <div
+                            className={`w-full rounded-t-md ${barColors[i % barColors.length]} opacity-80`}
+                            style={{ height: `${(d.value / max) * 100}%` }}
+                        />
+                        <span className="max-w-full truncate text-[10px] text-text-3">
                             {d.label}
                         </span>
-                        <div className="flex-1 h-6 bg-gray-800 rounded-full overflow-hidden">
-                            <div
-                                className="h-full bg-linear-to-r from-blue-600 to-purple-500 rounded-full transition-all duration-500"
-                                style={{ width: `${(d.value / max) * 100}%` }}
-                            />
-                        </div>
-                        <span className="w-10 text-xs text-gray-400">{d.value}</span>
                     </div>
                 ))}
             </div>

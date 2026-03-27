@@ -1,14 +1,15 @@
 export const labels = {
   home: {
     title: "What do you want to build?",
-    description: "Describe a UI and the AI will generate it, or pick a quick action below",
-    generating: "Generating UI…",
+    description: "Describe a UI and the model will generate it. Or pick a quick action.",
+    generating: "Generating...",
     send: "Send",
+    quickActions: "Quick actions",
   },
   progress: {
-    title: "Loading AI Model",
-    initializing: "Initializing…",
-    loadingModel: "Loading model…",
-    optimizing: "Optimizing for inference…",
-  }
+    title: "Loading model",
+    initializing: "Initializing...",
+    loadingModel: "Loading model...",
+    optimizing: "Optimizing...",
+  },
 };

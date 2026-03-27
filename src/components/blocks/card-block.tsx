@@ -1,22 +1,25 @@
+const colors: Record<string, string> = {
+    blue: "bg-blue-400",
+    green: "bg-emerald-400",
+    purple: "bg-violet-400",
+    orange: "bg-orange-400",
+    red: "bg-red-400",
+};
+
 export const CardBlock = ({ props }: { props: Record<string, unknown> }) => {
-    const colorMap: Record<string, string> = {
-        blue: "border-blue-500 bg-blue-950/40",
-        green: "border-green-500 bg-green-950/40",
-        purple: "border-purple-500 bg-purple-950/40",
-        orange: "border-orange-500 bg-orange-950/40",
-        red: "border-red-500 bg-red-950/40",
-    };
-    const color = (props.color as string) || "blue";
+    const stripe = colors[(props.color as string)] || colors.blue;
+
     return (
-        <div
-            className={`rounded-xl border-l-4 p-4 ${colorMap[color] || colorMap.blue}`}
-        >
-            {typeof props.title === "string" && (
-                <h3 className="mb-2 text-lg font-semibold text-white">
-                    {props.title}
-                </h3>
-            )}
-            <p className="text-sm text-gray-300">{String(props.content ?? "")}</p>
+        <div className="block overflow-hidden !p-0">
+            <div className={`h-1 ${stripe}`} />
+            <div className="p-5">
+                {typeof props.title === "string" && (
+                    <h3 className="block-title">{props.title}</h3>
+                )}
+                <p className="text-sm leading-relaxed text-text-2">
+                    {String(props.content ?? "")}
+                </p>
+            </div>
         </div>
     );
 }

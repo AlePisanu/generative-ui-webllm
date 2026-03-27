@@ -1,29 +1,27 @@
 import { labels } from "@/constants/labels";
 
 interface LoadingProps {
-    progress: {
-        progress: number;
-        text: string;
-    };
+    progress: { progress: number; text: string };
 }
 
 export const Loading = ({ progress }: LoadingProps) => {
     const pct = Math.round(progress.progress * 100);
 
     return (
-        <div className="flex flex-1 flex-col items-center justify-center gap-6 bg-white/5 px-4">
-            <div className="flex flex-col items-center gap-2">
-                <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-700 border-t-blue-500" />
-                <h1 className="text-xl font-semibold text-white">{labels.progress.title}</h1>
+        <div className="flex h-screen flex-col items-center justify-center gap-10">
+            <div className="text-center">
+                <div className="dot mx-auto mb-4 bg-accent" />
+                <h1 className="text-sm font-semibold">{labels.progress.title}</h1>
+                <p className="mt-1 text-xs text-text-3">{pct}%</p>
             </div>
-            <div className="w-full max-w-md">
-                <div className="mb-2 h-3 w-full overflow-hidden rounded-full bg-gray-800">
+            <div className="w-full max-w-xs">
+                <div className="h-1 overflow-hidden rounded-full bg-surface">
                     <div
-                        className="h-full rounded-full bg-linear-to-r from-blue-600 to-purple-500 transition-all duration-300"
+                        className="h-full rounded-full bg-accent transition-all duration-500"
                         style={{ width: `${pct}%` }}
                     />
                 </div>
-                <p className="text-center text-sm text-gray-400">{progress.text}</p>
+                <p className="mt-3 text-center text-[11px] text-text-3">{progress.text}</p>
             </div>
         </div>
     );

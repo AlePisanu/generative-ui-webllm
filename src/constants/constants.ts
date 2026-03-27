@@ -22,8 +22,24 @@ CRITICAL: Output raw JSON only. Every key must be in double quotes. No text befo
 export const VALID_TYPES = new Set(["card", "alert", "list", "chart", "form", "stat", "image_placeholder", "text"]);
 
 export const QUICK_ACTIONS = [
-  { label: "Dashboard", prompt: "Create a dashboard with stats about a SaaS product: MRR, active users, churn rate, and a bar chart of monthly revenue" },
-  { label: "Contact form", prompt: "Create a contact form with name, email, subject, and message fields" },
-  { label: "Status page", prompt: "Show a status page with alerts for 3 services: API (operational), Database (degraded), CDN (operational)" },
-  { label: "Product card", prompt: "Create a product card for a pair of wireless headphones priced at $79, with key features listed" },
+  {
+    label: "Dashboard",
+    description: "SaaS metrics with chart",
+    prompt: "Create a dashboard with stats about a SaaS product: MRR, active users, churn rate, and a bar chart of monthly revenue",
+  },
+  {
+    label: "Contact form",
+    description: "Classic input fields",
+    prompt: "Create a contact form with name, email, subject, and message fields",
+  },
+  {
+    label: "Status page",
+    description: "Service health overview",
+    prompt: "Show a status page with alerts for 3 services: API (operational), Database (degraded), CDN (operational)",
+  },
+  {
+    label: "Product card",
+    description: "Product card with features",
+    prompt: "Create a product card for a pair of wireless headphones priced at $79, with key features listed",
+  },
 ];

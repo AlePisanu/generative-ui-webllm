@@ -23,12 +23,37 @@ const blockMap: Record<
 };
 
 export function RenderUIBlocks({ blocks }: { blocks: UIBlock[] }) {
+  const groups: Array<{ type: "stat-group"; blocks: UIBlock[] } | { type: "single"; block: UIBlock }> = [];
+
+  for (const block of blocks) {
+    if (block.type === "stat") {
+      const last = groups[groups.length - 1];
+      if (last && last.type === "stat-group") {
+        last.blocks.push(block);
+      } else {
+        groups.push({ type: "stat-group", blocks: [block] });
+      }
+    } else {
+      groups.push({ type: "single", block });
+    }
+  }
+
   return (
-    <div className="grid gap-3 mt-3">
-      {blocks.map((block, i) => {
-        const Component = blockMap[block.type];
+    <div className="space-y-2 mt-3">
+      {groups.map((group, i) => {
+        if (group.type === "stat-group") {
+          const cols = group.blocks.length >= 3 ? "grid-cols-3" : group.blocks.length === 2 ? "grid-cols-2" : "";
+          return (
+            <div key={i} className={`grid gap-2 ${cols}`}>
+              {group.blocks.map((block, j) => (
+                <StatBlock key={j} props={block.props} />
+              ))}
+            </div>
+          );
+        }
+        const Component = blockMap[group.block.type];
         if (!Component) return null;
-        return <Component key={i} props={block.props} />;
+        return <Component key={i} props={group.block.props} />;
       })}
     </div>
   );

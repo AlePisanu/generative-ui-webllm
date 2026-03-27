@@ -16,7 +16,7 @@ export interface LLMResponse {
     ui?: UIBlock[];
 }
 
-export type Phase = "loading" | "ready";
+export type Phase = "loading" | "ready" | "error";
 
 export interface Message {
     role: "user" | "assistant";

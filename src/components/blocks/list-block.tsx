@@ -1,22 +1,20 @@
 export const ListBlock = ({ props }: { props: Record<string, unknown> }) => {
     const items = (props.items as string[]) || [];
-    const Tag = props.ordered ? "ol" : "ul";
+    const ordered = !!props.ordered;
+
     return (
-        <div className="rounded-lg border border-gray-700 bg-gray-900/60 p-4">
+        <div className="block">
             {typeof props.title === "string" && (
-                <h3 className="mb-3 text-lg font-semibold text-white">
-                    {props.title}
-                </h3>
+                <h3 className="block-title">{props.title}</h3>
             )}
-            <Tag
-                className={`space-y-1 pl-5 ${props.ordered ? "list-decimal" : "list-disc"}`}
-            >
-                {items.map((item, i) => (
-                    <li key={i} className="text-sm text-gray-300">
-                        {item}
-                    </li>
-                ))}
-            </Tag>
+            {items.map((item, i) => (
+                <div key={i} className="flex items-start gap-3 border-b border-border py-2 last:border-0">
+                    <span className="mt-0.5 w-5 shrink-0 text-right font-mono text-[11px] text-text-3">
+                        {ordered ? `${i + 1}.` : "\u2022"}
+                    </span>
+                    <span className="text-sm leading-relaxed text-text-2">{item}</span>
+                </div>
+            ))}
         </div>
     );
 }
