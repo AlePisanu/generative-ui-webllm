@@ -31,7 +31,7 @@ export function useChat(engine: MLCEngine | null, ready: boolean) {
     try {
       const response = await chat(
         engine,
-        history.map((m) => ({ role: m.role, content: m.content }))
+        [{ role: "user", content: text.trim() }]
       );
       console.log("[LLM response]", JSON.stringify(response, null, 2));
 

@@ -17,7 +17,9 @@ text (props: content, variant)
 Example response:
 {"message":"Here is your dashboard","ui":[{"type":"stat","props":{"label":"Revenue","value":"$45K","change":"+12%","trend":"up"}},{"type":"stat","props":{"label":"Users","value":"1200","change":"+5%","trend":"up"}},{"type":"chart","props":{"title":"Revenue","data":[{"label":"Jan","value":30000},{"label":"Feb","value":35000},{"label":"Mar","value":45000}]}}]}
 
-CRITICAL: Output raw JSON only. Every key must be in double quotes. No text before or after the JSON.`;
+CRITICAL:
+- Output raw JSON only. Every key must be in double quotes. No text before or after the JSON.
+- Only generate what the user asks for. If they ask for one card, output one card. Do NOT repeat or regenerate previous UI.`;
 
 export const VALID_TYPES = new Set(["card", "alert", "list", "chart", "form", "stat", "image_placeholder", "text"]);
 

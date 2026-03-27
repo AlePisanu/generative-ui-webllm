@@ -30,12 +30,10 @@ export default function Home() {
 type ChatState = ReturnType<typeof useChat>;
 
 function AppLayout({ messages, input, setInput, generating, send, chatEndRef, inputRef }: ChatState) {
-  const latestUI = useMemo(() => {
-    for (let i = messages.length - 1; i >= 0; i--) {
-      const msg = messages[i];
-      if (msg.role === "assistant" && msg.ui?.length) return msg;
-    }
-    return null;
+  const allBlocks = useMemo(() => {
+    return messages.flatMap((msg) =>
+      msg.role === "assistant" && msg.ui?.length ? msg.ui : []
+    );
   }, [messages]);
 
   return (
@@ -132,12 +130,9 @@ function AppLayout({ messages, input, setInput, generating, send, chatEndRef, in
       </aside>
 
       <main className="flex-1 overflow-y-auto p-8">
-        {latestUI ? (
+        {allBlocks.length > 0 ? (
           <div className="mx-auto max-w-4xl">
-            {latestUI.content && (
-              <p className="mb-5 text-base text-text-2">{latestUI.content}</p>
-            )}
-            <RenderUIBlocks blocks={latestUI.ui!} />
+            <RenderUIBlocks blocks={allBlocks} />
           </div>
         ) : (
           <div className="flex h-full items-center justify-center">
