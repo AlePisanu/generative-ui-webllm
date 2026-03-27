@@ -10,7 +10,8 @@ Everything runs client-side: the prompt goes in, the model thinks, JSON comes ou
 
 ## Live demo
 
-https://github.com/user-attachments/assets/e10b152a-033f-4389-a98d-355c81f8a400
+
+https://github.com/user-attachments/assets/48b1f029-5222-4012-878c-6d2db89bd317
 
 
 Here is a live demo hosted in vercel: https://generative-ui-webllm.vercel.app/
