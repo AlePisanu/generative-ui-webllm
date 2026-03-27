@@ -118,31 +118,49 @@ const tryParse = (s: string): unknown | null => {
   return null;
 };
 
+// Find the closing bracket that matches the opener at `start`.
+const findMatchingClose = (s: string, start: number): number => {
+  const open = s[start];
+  const close = open === "{" ? "}" : "]";
+  let depth = 0;
+  let inString = false;
+  for (let i = start; i < s.length; i++) {
+    const ch = s[i];
+    if (ch === '"' && s[i - 1] !== "\\") { inString = !inString; continue; }
+    if (inString) continue;
+    if (ch === open) depth++;
+    else if (ch === close) { depth--; if (depth === 0) return i; }
+  }
+  return -1;
+};
+
 const extractJSON = (raw: string): LLMResponse => {
+  // strip markdown fences
   let cleaned = raw;
   const fenceMatch = raw.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (fenceMatch) {
-    cleaned = fenceMatch[1].trim();
-  }
+  if (fenceMatch) cleaned = fenceMatch[1].trim();
 
-  const direct = tryParse(cleaned);
-  if (direct) return normalize(direct);
-
-  const arrStart = cleaned.indexOf("[");
-  const braceStart = cleaned.indexOf("{");
-
-  if (arrStart !== -1 && (braceStart === -1 || arrStart < braceStart)) {
-    const arrEnd = cleaned.lastIndexOf("]");
-    if (arrEnd > arrStart) {
-      const parsed = tryParse(cleaned.slice(arrStart, arrEnd + 1));
+  // strip trailing text after JSON (model sometimes adds commentary)
+  const firstBrace = cleaned.indexOf("{");
+  if (firstBrace !== -1) {
+    const end = findMatchingClose(cleaned, firstBrace);
+    if (end !== -1) {
+      const slice = cleaned.slice(firstBrace, end + 1);
+      const parsed = tryParse(slice);
       if (parsed) return normalize(parsed);
     }
   }
 
-  if (braceStart !== -1) {
-    const braceEnd = cleaned.lastIndexOf("}");
-    if (braceEnd > braceStart) {
-      const parsed = tryParse(cleaned.slice(braceStart, braceEnd + 1));
+  // try the whole string
+  const direct = tryParse(cleaned);
+  if (direct) return normalize(direct);
+
+  // try array
+  const arrStart = cleaned.indexOf("[");
+  if (arrStart !== -1) {
+    const arrEnd = findMatchingClose(cleaned, arrStart);
+    if (arrEnd !== -1) {
+      const parsed = tryParse(cleaned.slice(arrStart, arrEnd + 1));
       if (parsed) return normalize(parsed);
     }
   }
