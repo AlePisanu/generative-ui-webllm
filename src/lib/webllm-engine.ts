@@ -97,6 +97,10 @@ const normalize = (parsed: unknown): LLMResponse => {
 
 const repairJSON = (s: string): string => {
   let r = s;
+  r = r.replace(/:\s*(\$[\d,.]+[KMBkmb]?)\b/g, ':"$1"');
+  r = r.replace(/:\s*(\+[\d,.]+%)/g, ':"$1"');
+  r = r.replace(/:\s*(-[\d,.]+%)/g, ':"$1"');
+  r = r.replace(/:\s*([a-zA-Z_][\w]*)\s*([,}\]])/g, ':"$1"$2');
   r = r.replace(/\{\s*\d+\s*,/g, '{');
   r = r.replace(/,\s*\d+\s*,/g, ',');
   r = r.replace(/"([a-zA-Z_]\w*)\s+[a-zA-Z_]\w*"\s*:/g, '"$1":');
@@ -165,8 +169,10 @@ export const chat = async (
   });
 
   const raw = reply.choices[0]?.message?.content || "{}";
+  console.log("[LLM raw]", raw);
 
   const result = extractJSON(raw);
+  console.log("[LLM parsed]", result);
   return result;
 }
 

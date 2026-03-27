@@ -4,8 +4,16 @@ const barColors = [
     "bg-amber-400", "bg-cyan-400",
 ];
 
+const parseNumber = (v: unknown): number => {
+    if (typeof v === "number") return v;
+    if (typeof v !== "string") return 0;
+    const cleaned = v.replace(/[^0-9.\-]/g, "");
+    return parseFloat(cleaned) || 0;
+};
+
 export const ChartBlock = ({ props }: { props: Record<string, unknown> }) => {
-    const data = (props.data as Array<{ label: string; value: number }>) || [];
+    const raw = (props.data as Array<{ label: string; value: unknown }>) || [];
+    const data = raw.map((d) => ({ label: d.label, value: parseNumber(d.value) }));
     const max = Math.max(...data.map((d) => d.value), 1);
 
     return (
